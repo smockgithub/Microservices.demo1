@@ -1,0 +1,39 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/{url}", //上游的url：/up/value/get 对应下游url：/api/value/get
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 8010
+        }
+        ,
+        {
+          "Host": "localhost",
+          "Port": 8012
+        }
+        //,
+        //{
+        //  "Host": "39.108.54.23",
+        //  "Port": 8083
+        //}
+      ],
+      "UpstreamPathTemplate": "/up/{url}", //如url冲突可加Priority决定，
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin" //轮询 //"LeastConnection" //最小连接数 "NoLoadBalance" //不负载均衡  //"CookieStickySessions" //会话粘滞
+      }
+      //"LoadBalancerOptions": {
+      //  "Type": "CookieStickySessions",
+      //  "Key": "ASP.NET_SessionId",
+      //  "Expiry": 1800000
+      //}
+
+
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5000"
+  }
+}
