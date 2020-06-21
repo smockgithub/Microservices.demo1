@@ -3,22 +3,22 @@
     {
       "DownstreamPathTemplate": "/api/{url}", //上游的url：/up/value/get 对应下游url：/api/value/get
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 8010
-        }
-        ,
-        {
-          "Host": "localhost",
-          "Port": 8012
-        }
-        //,
-        //{
-        //  "Host": "39.108.54.23",
-        //  "Port": 8083
-        //}
-      ],
+      //"DownstreamHostAndPorts": [
+      //  {
+      //    "Host": "localhost",
+      //    "Port": 8010
+      //  },
+      //  {
+      //    "Host": "localhost",
+      //    "Port": 8012
+      //  }
+      //  //,
+      //  //{
+      //  //  "Host": "39.108.54.23",
+      //  //  "Port": 8083
+      //  //}
+      //],
+      "ServiceName": "consul", //ServiceDiscoveryProvider需要配置这个Name
       "UpstreamPathTemplate": "/up/{url}", //如url冲突可加Priority决定，
       "UpstreamHttpMethod": [ "Get", "Post" ],
       "LoadBalancerOptions": {
@@ -34,6 +34,13 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:5000"
+    "BaseUrl": "http://localhost:5000",
+    "ServiceDiscoveryProvider": {
+      "Host": "localhost",
+      "Port": 8500,
+      "Type": "Consul"
+      //"Type": "PollConsul",  //修改策略为轮询，这个性能比较好
+      //"PollingInterval": 100  //轮询间隔
+    }
   }
 }

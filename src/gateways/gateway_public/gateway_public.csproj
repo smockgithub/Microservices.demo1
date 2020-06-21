@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Ocelot" Version="16.0.1" />
+    <PackageReference Include="Ocelot.Provider.Consul" Version="16.0.1" />
   </ItemGroup>
 
   <ItemGroup>
