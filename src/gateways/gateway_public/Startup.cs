@@ -1,18 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+ï»¿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
+using Ocelot.Provider.Polly;
 
 namespace gateway_public
 {
@@ -28,8 +22,23 @@ namespace gateway_public
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOcelot().AddConsul();
-            //.AddConsul();¼¯³ÉConsul£¬ĞèÒªĞŞ¸ÄÅäÖÃÎÄ¼ş
+            var authenticationProviderKey = "TestKey";
+
+            //Add JWT support
+            //services.AddAuthentication()
+            //    .AddJwtBearer(authenticationProviderKey, x =>
+            //    {
+            //        x.Authority = "test";
+            //        x.Audience = "test";
+            //    });
+
+            //use IdentityServer4 Bearer Tokens
+
+
+
+
+            services.AddOcelot().AddConsul().AddPolly().AddCacheManager(x => { x.WithDictionaryHandle(); });
+            //.AddConsul();é›†æˆConsulï¼Œéœ€è¦ä¿®æ”¹é…ç½®æ–‡ä»¶
 
             //services.AddControllers();
         }

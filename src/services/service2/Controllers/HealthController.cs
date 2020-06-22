@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace service1.Controllers
+namespace service2.Controllers
 {
     //Consul会通过call这个API来确认Service的健康状态
     [Produces("application/json")]

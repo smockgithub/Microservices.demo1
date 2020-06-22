@@ -1,7 +1,7 @@
-{
+﻿{
   "Routes": [
     {
-      "DownstreamPathTemplate": "/api/{url}", //���ε�url��/up/value/get ��Ӧ����url��/api/value/get
+      "DownstreamPathTemplate": "/api/{url}", //上游的url：/up/value/get 对应下游url：/api/value/get
       "DownstreamScheme": "http",
       //"DownstreamHostAndPorts": [
       //  {
@@ -18,11 +18,31 @@
       //  //  "Port": 8083
       //  //}
       //],
-      "ServiceName": "consul", //ServiceDiscoveryProvider��Ҫ�������Name
-      "UpstreamPathTemplate": "/up/{url}", //��url��ͻ�ɼ�Priority������
+      "ServiceName": "productService", //ServiceDiscoveryProvider需要配置这个Name,服务集
+      "UpstreamPathTemplate": "/up/{url}", //如url冲突可加Priority决定，
       "UpstreamHttpMethod": [ "Get", "Post" ],
       "LoadBalancerOptions": {
-        "Type": "RoundRobin" //��ѯ //"LeastConnection" //��С������ "NoLoadBalance" //�����ؾ���  //"CookieStickySessions" //�Ựճ��
+        "Type": "RoundRobin" //轮询 //"LeastConnection" //最小连接数 "NoLoadBalance" //不负载均衡  //"CookieStickySessions" //会话粘滞
+      },
+      //"FileCacheOptions": {
+      //  "TtlSeconds": 1, //5s缓存，客户端重复请求时将返回缓存内的内容
+      //  "Region": "Region1" //缓存的区域
+      //},
+      "RateLimitOptions": {
+        "ClientWhitelist": [ "one", "two" ], // 白名单:在请求头中包含ClientId=xxx的请求不受限流控制
+        "EnableRateLimiting": true, //开启限流or not
+        "Period": "1m", //1s, 5m, 1h, 1d
+        "PeriodTimespan": 30, // 几秒后可重试
+        "Limit": 10 // 最大请求数
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3, //允许几个异常，//可以看到在前3次请求，Time在1000ms之后返回503，在第四次以后发生熔断，请求后立即（Time在100ms左右）返回503，需要连续出错
+        "DurationOfBreak": 20000, // 熔断时间，ms
+        "TimeoutValue": 1000 //请求超时时间 ms
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "TestKey",
+        "AllowedScopes": []
       }
       //"LoadBalancerOptions": {
       //  "Type": "CookieStickySessions",
@@ -34,13 +54,13 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:5000",
+    //"BaseUrl": "http://localhost:5000",
     "ServiceDiscoveryProvider": {
       "Host": "localhost",
       "Port": 8500,
       "Type": "Consul"
-      //"Type": "PollConsul",  //�޸Ĳ���Ϊ��ѯ��������ܱȽϺ�
-      //"PollingInterval": 100  //��ѯ���
+      //"Type": "PollConsul",  //修改策略为轮询，这个性能比较好，不用每次请求都查询
+      //"PollingInterval": 100  //轮询间隔
     }
   }
 }
