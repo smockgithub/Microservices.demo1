@@ -63,6 +63,14 @@ docker exec consul consul operator raft list-peers
 - 方式三（推荐、侵入式）：通过代码实现注册和自动删除
 
 # id4s实现
+- 注意：权限验证是在ocelot上进行还是在service上进行。  
+如果在ocelot上进行，则效率较高，但是要进行不同权限的验证需要进行扩展，如果在service上实现，则需要在每一个service上实现。
+- 注意2：id4s的4.0版本的配置有坑。
+- 本demo采用在ocelot上进行bearer token验证
+- [验证分为外部和内部验证](https://mp.weixin.qq.com/s?__biz=MzAwNTMxMzg1MA==&mid=2654074356&idx=2&sn=dd6a23a54d6644b21ba0f01c48c753a5&chksm=80dbd1a1b7ac58b7c4149ffbade9963b0a81c942d58914528c8ec6b1b9389e8b508197171628&scene=21#wechat_redirect)
+- options.Authority的配置需要注意
+> options.Authority = "http://172.16.0.6:8009";//有效  
+> options.Authority = "http://0.0.0.0:8009";//无效
 
 # ocelot配置
 ### 服务A调用服务B

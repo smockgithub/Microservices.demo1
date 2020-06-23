@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +24,7 @@ namespace gateway_public
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var authenticationProviderKey = "TestKey";
+            //var authenticationProviderKey = "TestKey";
 
             //Add JWT support
             //services.AddAuthentication()
@@ -33,7 +35,16 @@ namespace gateway_public
             //    });
 
             //use IdentityServer4 Bearer Tokens
-
+            var AuthenticationProviderKey = "gatewayKey";
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(AuthenticationProviderKey, options =>
+                {
+                    options.Authority = "http://172.16.0.6:8009";
+                    options.ApiName = "api1";
+                    options.RequireHttpsMetadata = false;
+                    options.SupportedTokens = SupportedTokens.Both;
+                    options.ApiSecret = "secret";
+                });
 
 
 

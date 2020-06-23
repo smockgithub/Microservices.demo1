@@ -41,7 +41,7 @@
         "TimeoutValue": 1000 //请求超时时间 ms
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "TestKey",
+        "AuthenticationProviderKey": "gatewayKey", // 与startup.cs中ConfigureServices的一致
         "AllowedScopes": []
       }
       //"LoadBalancerOptions": {
