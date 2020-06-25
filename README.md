@@ -45,7 +45,7 @@ docker exec consul consul operator raft list-peers
 {
     "id": "service1",
     "name": "service1",
-    "address": "localhost",
+    "address": "localhost", 
     "port": 8010,
     "tags": ["dev"],
     "checks": 
